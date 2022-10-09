@@ -31,6 +31,9 @@ func InitRoutes(routes *gin.Engine) {
 	routes.GET("/case-files", func(c *gin.Context) {
 		svc.View().CaseFiles(c)
 	})
+	routes.GET("/case-files/:id", func(c *gin.Context) {
+		svc.View().CaseFileView(c)
+	})
 	// Forum
 	routes.GET("/forum", func(c *gin.Context) {
 		svc.View().Forum(c)
