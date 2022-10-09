@@ -13,7 +13,7 @@ import (
 	"github.com/mrinjamul/the-science-of-deduction/api/routes"
 )
 
-//go:embed templates/layouts/*
+//go:embed templates/*
 var files embed.FS
 
 var (

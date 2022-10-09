@@ -1,0 +1,14 @@
+<div id="postcontainer">
+    <div id="post">
+        <h1>{{.PostTitle}}</h1>
+        <p>by {{.Author}}</p>
+        <figure class="fig-full">
+            <img src="{{.ImgURL}}" width="500" height="220" alt="{{.ImgAlt}}" />
+        </figure>
+        {{.Contents}}
+        <!-- footer -->
+        {{ template "post-footer.html" . }}
+        <div id="divider"></div>
+    </div>
+    <!--post-->
+</div>

@@ -2,8 +2,6 @@ package routes
 
 import (
 	"embed"
-	"path"
-	"path/filepath"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -25,14 +23,24 @@ func InitRoutes(routes *gin.Engine) {
 	// Serve the frontend
 	// This will ensure that the web pages are served correctly
 
+	// Home Page
+	routes.GET("/", func(c *gin.Context) {
+		svc.View().Index(c)
+	})
+	// Case Files
+	routes.GET("/case-files", func(c *gin.Context) {
+		svc.View().CaseFiles(c)
+	})
+	// Forum
+	routes.GET("/forum", func(c *gin.Context) {
+		svc.View().Forum(c)
+	})
+	// Hidden Messages
+	routes.GET("/hidden-messages", func(c *gin.Context) {
+		svc.View().Index(c)
+	})
 	routes.NoRoute(func(c *gin.Context) {
-		dir, file := path.Split(c.Request.RequestURI)
-		ext := filepath.Ext(file)
-		if file == "" || ext == "" {
-			c.File("./templates/layouts/index.html")
-		} else {
-			c.File("./templates/layouts/" + path.Join(dir, file))
-		}
+		svc.View().NotFound(c)
 	})
 
 	// Backend API

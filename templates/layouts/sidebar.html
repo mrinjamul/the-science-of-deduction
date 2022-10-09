@@ -1,0 +1,17 @@
+<div id="sidebar">
+    <h1>Case Files</h1>
+    <div id="divider"></div>
+    <!-- <big> -->
+    <div class="big">
+        {{range .caseFiles}}
+        {{ template "case-file.html" . }}
+        {{end}}
+        <p><u><big>Archived Case Files</big></u></p>
+        {{range .archivedCaseFiles}}
+        {{ template "case-file.html" . }}
+        {{end}}
+        <!--//"-->
+        {{ template "recent-activity.html" . }}
+    </div>
+    <!-- </big> -->
+</div>
