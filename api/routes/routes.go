@@ -37,7 +37,7 @@ func InitRoutes(routes *gin.Engine) {
 	})
 	// Hidden Messages
 	routes.GET("/hidden-messages", func(c *gin.Context) {
-		svc.View().Index(c)
+		svc.View().HiddenMessages(c)
 	})
 	routes.NoRoute(func(c *gin.Context) {
 		svc.View().NotFound(c)

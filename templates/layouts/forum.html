@@ -6,6 +6,11 @@
     <!--wrapper starts-->
     <div id="wrapper">
         {{ template "header.html" . }}
+        <div id="content">
+            {{ template "forum-content.html" . }}
+            {{ template "sidebar.html" . }}
+            <br class="clear" />
+        </div>
     </div>
     <!--wrapper ends-->
 </body>
