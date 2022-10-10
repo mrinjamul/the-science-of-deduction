@@ -5,15 +5,18 @@ import (
 	"time"
 )
 
-// Post
-type Post struct {
+// CaseFiles
+type CaseFiles struct {
 	Id          uint         `json:"id" gorm:"primary_key,unique,not null"`
 	UserId      uint         `json:"user_id"`
+	Author      string       `json:"author"`
 	Type        string       `json:"type"`
 	Title       string       `json:"title"`
 	Description string       `json:"description"`
 	Content     string       `json:"content"`
-	IsArchived  *bool        `json:"archived,omitempty"`
+	IsArchived  bool         `json:"archived,omitempty"`
+	IsClosed    bool         `json:"closed,omitempty"`
+	IsDeleted   bool         `json:"deleted,omitempty"`
 	UpdatedAt   time.Time    `json:"updated_at" gorm:""`
 	CreatedAt   time.Time    `json:"created_at" gorm:""`
 	DeletedAt   sql.NullTime `json:"deleted_at" gorm:"index"`
