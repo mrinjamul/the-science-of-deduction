@@ -29,12 +29,6 @@ type template struct {
 	postRepo repository.CaseFiles
 }
 
-type casesFiles struct {
-	URL       string
-	Title     string
-	IsDeleted bool
-}
-
 // Recent Activities
 var (
 	recentPostURL   string = "#"

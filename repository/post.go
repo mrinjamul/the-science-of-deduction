@@ -70,7 +70,8 @@ func (p *post) GetArchivedCaseFiles(ctx *gin.Context) ([]models.CaseFiles, error
 // GetActiveCaseFiles returns a list of active CaseFiles
 func (p *post) GetActiveCaseFiles(ctx *gin.Context) ([]models.CaseFiles, error) {
 	var caseFiles []models.CaseFiles
-	err := p.db.Order("created_at desc").Where("is_archived = ?", 0).Find(&caseFiles).Error
+	// case files which are not archived and closed
+	err := p.db.Order("created_at desc").Where("is_archived = ? AND is_closed = ?", 0, 1).Find(&caseFiles).Error
 	return caseFiles, err
 }
 
