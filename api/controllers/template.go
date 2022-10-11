@@ -34,7 +34,7 @@ type template struct {
 
 // Recent Activities
 var (
-	recentPostURL   string = "#"
+	recentPostURL   string = "mailto:mrinjamul@pm.me"
 	recentPostTitle string = "If you want my help, write to me at 221B Baker Street, London or contact me through John's blog. - SH"
 
 	// Copyright
@@ -196,7 +196,7 @@ func (t *template) CreateCaseFile(c *gin.Context) {
 		c.HTML(http.StatusNotFound, "404.html", gin.H{
 			"Title":        "Error 400",
 			"ErrorMessage": "Please fill all the feilds",
-			"Copyright":    "Copyright © 2022 mrinjamul. All rights reserved.",
+			"Copyright":    copyright,
 		})
 		return
 	}
@@ -231,7 +231,7 @@ func (t *template) CreateCaseFile(c *gin.Context) {
 		c.HTML(http.StatusNotFound, "404.html", gin.H{
 			"Title":        "404 Not Found",
 			"ErrorMessage": "Something went wrong\n" + err.Error(),
-			"Copyright":    "Copyright © 2022 mrinjamul. All rights reserved.",
+			"Copyright":    copyright,
 		})
 	}
 
@@ -256,7 +256,7 @@ func (t *template) CaseFileEdit(c *gin.Context) {
 			"Title":        "404 Not Found",
 			"IsCase":       "active",
 			"ErrorMessage": "Something went wrong\n" + err.Error(),
-			"Copright":     "Copyright © 2022 mrinjamul. All rights reserved.",
+			"Copright":     copyright,
 		})
 		return
 	}
@@ -328,7 +328,7 @@ func (t *template) UpdateCaseFile(c *gin.Context) {
 		c.HTML(http.StatusNotFound, "404.html", gin.H{
 			"Title":        "404 Not Found",
 			"ErrorMessage": "Something went wrong\n" + err.Error(),
-			"Copyright":    "Copyright © 2022 mrinjamul. All rights reserved.",
+			"Copyright":    copyright,
 		})
 	}
 	// Get the post title from the form
@@ -359,7 +359,7 @@ func (t *template) UpdateCaseFile(c *gin.Context) {
 		c.HTML(http.StatusNotFound, "404.html", gin.H{
 			"Title":        "Error 400",
 			"ErrorMessage": "Please fill all the feilds",
-			"Copyright":    "Copyright © 2022 mrinjamul. All rights reserved.",
+			"Copyright":    copyright,
 		})
 		return
 	}
@@ -401,7 +401,7 @@ func (t *template) UpdateCaseFile(c *gin.Context) {
 		c.HTML(http.StatusNotFound, "404.html", gin.H{
 			"Title":        "404 Not Found",
 			"ErrorMessage": "Something went wrong\n" + err.Error(),
-			"Copyright":    "Copyright © 2022 mrinjamul. All rights reserved.",
+			"Copyright":    copyright,
 		})
 	}
 
@@ -425,7 +425,7 @@ func (t *template) CaseFileView(c *gin.Context) {
 			"Title":        "404 Not Found",
 			"IsCase":       "active",
 			"ErrorMessage": "Something went wrong\n" + err.Error(),
-			"Copright":     "Copyright © 2022 mrinjamul. All rights reserved.",
+			"Copright":     copyright,
 		})
 		return
 	}
@@ -475,7 +475,7 @@ func (t *template) CaseFileView(c *gin.Context) {
 		"Title":        "404 Not Found",
 		"IsCase":       "active",
 		"ErrorMessage": "Lost in the Mind Palace !!",
-		"Copyright":    "Copyright © 2022 mrinjamul. All rights reserved.",
+		"Copyright":    copyright,
 	})
 }
 
@@ -550,7 +550,7 @@ func (t *template) NotFound(c *gin.Context) {
 	c.HTML(http.StatusNotFound, "404.html", gin.H{
 		"Title":        "404 Not Found",
 		"ErrorMessage": "Lost in the Mind Palace !!",
-		"Copyright":    "Copyright © 2022 mrinjamul. All rights reserved.",
+		"Copyright":    copyright,
 	})
 }
 
