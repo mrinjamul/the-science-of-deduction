@@ -185,6 +185,8 @@ func (t *template) CreateCaseFile(c *gin.Context) {
 	isClosed := c.PostForm("isClosed")
 	// Get isArchived from the form
 	isArchived := c.PostForm("isArchived")
+	// Get isMessage from the form
+	isMessage := c.PostForm("isMessage")
 	// Get isDeleted from the form
 	isDeleted := c.PostForm("isDeleted")
 	// Get the post date from the form
@@ -220,6 +222,9 @@ func (t *template) CreateCaseFile(c *gin.Context) {
 	}
 	if isClosed == "on" {
 		post.IsClosed = true
+	}
+	if isMessage == "on" {
+		post.IsMessage = true
 	}
 	if isDeleted == "on" {
 		post.IsDeleted = true
@@ -263,6 +268,7 @@ func (t *template) CaseFileEdit(c *gin.Context) {
 	var (
 		isClosed   string
 		isArchived string
+		isMessage  string
 		isDeleted  string
 	)
 	if post.IsClosed {
@@ -274,6 +280,11 @@ func (t *template) CaseFileEdit(c *gin.Context) {
 		isArchived = "checked"
 	} else {
 		isArchived = ""
+	}
+	if post.IsMessage {
+		isMessage = "checked"
+	} else {
+		isMessage = ""
 	}
 	if post.IsDeleted {
 		isDeleted = "checked"
@@ -309,6 +320,7 @@ func (t *template) CaseFileEdit(c *gin.Context) {
 		"postAuthor":        post.Author,
 		"postIsClosed":      isClosed,
 		"postIsArchived":    isArchived,
+		"postIsMessage":     isMessage,
 		"postIsDeleted":     isDeleted,
 		"postContents":      post.Content,
 		"caseFiles":         casefiles,
@@ -348,6 +360,8 @@ func (t *template) UpdateCaseFile(c *gin.Context) {
 	isClosed := c.PostForm("isClosed")
 	// Get isArchived from the form
 	isArchived := c.PostForm("isArchived")
+	// Get isMessage from the form
+	isMessage := c.PostForm("isMessage")
 	// Get isDeleted from the form
 	isDeleted := c.PostForm("isDeleted")
 	// Get the post date from the form
@@ -388,6 +402,11 @@ func (t *template) UpdateCaseFile(c *gin.Context) {
 		post.IsClosed = true
 	} else {
 		post.IsClosed = false
+	}
+	if isMessage == "on" {
+		post.IsMessage = true
+	} else {
+		post.IsMessage = false
 	}
 	if isDeleted == "on" {
 		post.IsDeleted = true
@@ -515,6 +534,16 @@ func (t *template) Forum(c *gin.Context) {
 // HiddenMessages is a function for hidden messages page
 func (t *template) HiddenMessages(c *gin.Context) {
 
+	messages, err := t.postRepo.GetMessagedCaseFiles(c)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "404.html", gin.H{
+			"Title":        "The Science of Deduction — 404",
+			"ErrorMessage": "Internal Server Error",
+			"Copright":     copyright,
+		})
+		return
+	}
+
 	archivedfiles, err := t.postRepo.GetArchivedCaseFiles(c)
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "404.html", gin.H{
@@ -537,6 +566,7 @@ func (t *template) HiddenMessages(c *gin.Context) {
 	c.HTML(http.StatusNotFound, "hidden-messages.html", gin.H{
 		"Title":             "The Science of Deduction — Hidden Messages",
 		"IsHidden":          "active",
+		"hiddenMessages":    messages,
 		"caseFiles":         casefiles,
 		"archivedCaseFiles": archivedfiles,
 		"recentPostURL":     recentPostURL,

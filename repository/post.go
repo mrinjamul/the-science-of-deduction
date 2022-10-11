@@ -24,6 +24,8 @@ type CaseFiles interface {
 	GetOnGoingCaseFiles(ctx *gin.Context) ([]models.CaseFiles, error)
 	// GetRecentCaseFiles returns a list of recent CaseFiles
 	GetRecentCaseFiles(ctx *gin.Context) ([]models.CaseFiles, error)
+	// GetMessagedCaseFiles returns a list of CaseFiles from emails
+	GetMessagedCaseFiles(ctx *gin.Context) ([]models.CaseFiles, error)
 	// UpdateCaseFile updates a CaseFile
 	UpdateCaseFile(ctx *gin.Context, caseFile *models.CaseFiles) error
 	// DeleteCaseFile deletes a CaseFile
@@ -87,6 +89,13 @@ func (p *post) GetOnGoingCaseFiles(ctx *gin.Context) ([]models.CaseFiles, error)
 func (p *post) GetRecentCaseFiles(ctx *gin.Context) ([]models.CaseFiles, error) {
 	var caseFiles []models.CaseFiles
 	err := p.db.Order("created_at desc").Limit(5).Find(&caseFiles).Error
+	return caseFiles, err
+}
+
+// GetMessagedCaseFiles returns a list of CaseFiles from emails
+func (p *post) GetMessagedCaseFiles(ctx *gin.Context) ([]models.CaseFiles, error) {
+	var caseFiles []models.CaseFiles
+	err := p.db.Order("created_at desc").Where("is_message = ?", 1).Find(&caseFiles).Error
 	return caseFiles, err
 }
 

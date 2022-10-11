@@ -18,6 +18,7 @@ type CaseFiles struct {
 	IsArchived  bool         `json:"archived,omitempty"`
 	IsClosed    bool         `json:"closed,omitempty"`
 	IsDeleted   bool         `json:"deleted,omitempty"`
+	IsMessage   bool         `json:"is_message,omitempty"`
 	UpdatedAt   time.Time    `json:"updated_at" gorm:""`
 	CreatedAt   time.Time    `json:"created_at" gorm:""`
 	DeletedAt   sql.NullTime `json:"deleted_at" gorm:"index"`

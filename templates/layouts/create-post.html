@@ -24,6 +24,10 @@
                 Is Archived:
             </label>
             <input class="form-input" type="checkbox" name="isArchived" id="isArchived" {{.postIsArchived}} />
+            <label for="isMessage">
+                Message-based Case:
+            </label>
+            <input class="form-input" type="checkbox" name="isMessage" id="isMessage" {{.postIsMessage}} />
             <label for="contents"><br /></label>
             <textarea class="form-input" name="contents" id="contents" rows="10" cols="50">{{.postContents}}
             </textarea>
