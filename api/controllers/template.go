@@ -622,63 +622,8 @@ func (t *template) ForumCreate(c *gin.Context) {
 		}
 	}
 
-	type thread struct {
-		Thread  models.Thread    `json:"thread"`
-		Replies []models.Comment `json:"comment"`
-	}
-	var threads []thread
-	// populate the threads
-	threadsfromDB, err := t.threadRepo.GetThreads(c)
-	if err != nil {
-		c.HTML(http.StatusInternalServerError, "404.html", gin.H{
-			"Title":        "The Science of Deduction — 404",
-			"ErrorMessage": "Internal Server Error",
-			"Copright":     copyright,
-		})
-		return
-	}
-	for _, thr := range threadsfromDB {
-		replies, err := t.commentRepo.GetCommentsByThreadID(thr.Id)
-		if err != nil {
-			c.HTML(http.StatusInternalServerError, "404.html", gin.H{
-				"Title":        "The Science of Deduction — 404",
-				"ErrorMessage": "Internal Server Error",
-				"Copright":     copyright,
-			})
-			return
-		}
-		threads = append(threads, thread{Thread: thr, Replies: replies})
-	}
-
-	archivedfiles, err := t.postRepo.GetArchivedCaseFiles(c)
-	if err != nil {
-		c.HTML(http.StatusInternalServerError, "404.html", gin.H{
-			"Title":        "The Science of Deduction — 404",
-			"ErrorMessage": "Internal Server Error",
-			"Copright":     copyright,
-		})
-		return
-	}
-	casefiles, err := t.postRepo.GetActiveCaseFiles(c)
-	if err != nil {
-		c.HTML(http.StatusInternalServerError, "404.html", gin.H{
-			"Title":        "The Science of Deduction — 404",
-			"ErrorMessage": "Internal Server Error",
-			"Copright":     copyright,
-		})
-		return
-	}
-
-	c.HTML(http.StatusNotFound, "forum.html", gin.H{
-		"Title":             "The Science of Deduction — Forum",
-		"IsForum":           "active",
-		"posts":             threads,
-		"caseFiles":         casefiles,
-		"archivedCaseFiles": archivedfiles,
-		"recentPostURL":     recentPostURL,
-		"recentPostTitle":   recentPostTitle,
-		"Copyright":         copyright,
-	})
+	// Redirect to the forum page
+	c.Redirect(http.StatusSeeOther, "/forum")
 }
 
 // HiddenMessages is a function for hidden messages page

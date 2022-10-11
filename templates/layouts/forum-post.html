@@ -13,7 +13,7 @@
         {{template "forum-comment.html" .}}
         {{end}}
         <div class="message">
-            <form class="" action="" method="post">
+            <form class="" action="/forum/new" method="post">
                 <input class="form-input" type="text" name="threadid" id="threadid" value="{{.Thread.Id}}" hidden>
                 <input class="form-input" type="text" name="commentAuthor" id="commentAuthor" value=""
                     placeholder="eg. John Doe" />
