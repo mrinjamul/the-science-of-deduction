@@ -24,6 +24,7 @@ type Template interface {
 	UpdateCaseFile(c *gin.Context)
 	CaseFileView(c *gin.Context)
 	Forum(c *gin.Context)
+	ForumCreate(c *gin.Context)
 	HiddenMessages(c *gin.Context)
 	NotFound(c *gin.Context)
 }
@@ -508,46 +509,146 @@ func (t *template) Forum(c *gin.Context) {
 		Replies []models.Comment `json:"comment"`
 	}
 	var threads []thread
-	// threadsfromDB, err := t.threadRepo.GetThreads(c)
-	// if err != nil {
-	// 	c.HTML(http.StatusInternalServerError, "404.html", gin.H{
-	// 		"Title":        "The Science of Deduction — 404",
-	// 		"ErrorMessage": "Internal Server Error",
-	// 		"Copright":     copyright,
-	// 	})
-	// 	return
-	// }
-	// for _, thr := range threadsfromDB {
-	// 	replies, err := t.commentRepo.GetCommentsByThreadID(thr.Id)
-	// 	if err != nil {
-	// 		c.HTML(http.StatusInternalServerError, "404.html", gin.H{
-	// 			"Title":        "The Science of Deduction — 404",
-	// 			"ErrorMessage": "Internal Server Error",
-	// 			"Copright":     copyright,
-	// 		})
-	// 		return
-	// 	}
-	// 	threads = append(threads, thread{Thread: thr, Replies: replies})
-	// }
+	threadsfromDB, err := t.threadRepo.GetThreads(c)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "404.html", gin.H{
+			"Title":        "The Science of Deduction — 404",
+			"ErrorMessage": "Internal Server Error",
+			"Copright":     copyright,
+		})
+		return
+	}
+	for _, thr := range threadsfromDB {
+		replies, err := t.commentRepo.GetCommentsByThreadID(thr.Id)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "404.html", gin.H{
+				"Title":        "The Science of Deduction — 404",
+				"ErrorMessage": "Internal Server Error",
+				"Copright":     copyright,
+			})
+			return
+		}
+		threads = append(threads, thread{Thread: thr, Replies: replies})
+	}
 
-	var thr thread
-	thr.Thread = models.Thread{
-		Author:  "mrinjamul",
-		Message: "hello",
+	archivedfiles, err := t.postRepo.GetArchivedCaseFiles(c)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "404.html", gin.H{
+			"Title":        "The Science of Deduction — 404",
+			"ErrorMessage": "Internal Server Error",
+			"Copright":     copyright,
+		})
+		return
 	}
-	thr.Replies = []models.Comment{
-		{
-			Author:  "mrinjamul",
-			Content: "hello",
-		},
-		{
-			Author:  "mrinjamul",
-			Content: "hello",
-		},
+	casefiles, err := t.postRepo.GetActiveCaseFiles(c)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "404.html", gin.H{
+			"Title":        "The Science of Deduction — 404",
+			"ErrorMessage": "Internal Server Error",
+			"Copright":     copyright,
+		})
+		return
 	}
-	threads = append(threads, thr)
-	threads = append(threads, thr)
-	threads = append(threads, thr)
+
+	c.HTML(http.StatusNotFound, "forum.html", gin.H{
+		"Title":             "The Science of Deduction — Forum",
+		"IsForum":           "active",
+		"posts":             threads,
+		"caseFiles":         casefiles,
+		"archivedCaseFiles": archivedfiles,
+		"recentPostURL":     recentPostURL,
+		"recentPostTitle":   recentPostTitle,
+		"Copyright":         copyright,
+	})
+}
+
+// ForumCreate creates a new thread or comment
+func (t *template) ForumCreate(c *gin.Context) {
+
+	// Get the threadAuthor and threadMessage from the form
+	threadAuthor := c.PostForm("threadAuthor")
+	threadAuthor = strings.TrimSpace(threadAuthor)
+	threadMessage := c.PostForm("threadMessage")
+	threadMessage = strings.TrimSpace(threadMessage)
+	// Get the commentAuthor and commentMessage from the form
+	threadId := c.PostForm("threadid")
+	commentAuthor := c.PostForm("commentAuthor")
+	commentAuthor = strings.TrimSpace(commentAuthor)
+	commentMessage := c.PostForm("commentMessage")
+	commentMessage = strings.TrimSpace(commentMessage)
+
+	// Check if the threadAuthor and threadMessage are empty
+	if threadAuthor != "" && threadMessage != "" && threadId == "" {
+		// Create a new thread
+		thread := models.Thread{
+			Author:  threadAuthor,
+			Message: threadMessage,
+		}
+		// Insert the thread into the database
+		err := t.threadRepo.CreateThread(c, &thread)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "404.html", gin.H{
+				"Title":        "The Science of Deduction — 404",
+				"ErrorMessage": "Internal Server Error",
+				"Copright":     copyright,
+			})
+			return
+		}
+	} else if commentAuthor != "" && commentMessage != "" && threadId != "" {
+		id, err := strconv.Atoi(threadId)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "404.html", gin.H{
+				"Title":        "The Science of Deduction — 404",
+				"ErrorMessage": "Internal Server Error",
+				"Copright":     copyright,
+			})
+			return
+		}
+		// Create a new comment
+		comment := models.Comment{
+			ThreadId: uint(id),
+			Author:   commentAuthor,
+			Content:  commentMessage,
+		}
+		// Insert the comment into the database
+		err = t.commentRepo.CreateComment(&comment)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "404.html", gin.H{
+				"Title":        "The Science of Deduction — 404",
+				"ErrorMessage": "Internal Server Error",
+				"Copright":     copyright,
+			})
+			return
+		}
+	}
+
+	type thread struct {
+		Thread  models.Thread    `json:"thread"`
+		Replies []models.Comment `json:"comment"`
+	}
+	var threads []thread
+	// populate the threads
+	threadsfromDB, err := t.threadRepo.GetThreads(c)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "404.html", gin.H{
+			"Title":        "The Science of Deduction — 404",
+			"ErrorMessage": "Internal Server Error",
+			"Copright":     copyright,
+		})
+		return
+	}
+	for _, thr := range threadsfromDB {
+		replies, err := t.commentRepo.GetCommentsByThreadID(thr.Id)
+		if err != nil {
+			c.HTML(http.StatusInternalServerError, "404.html", gin.H{
+				"Title":        "The Science of Deduction — 404",
+				"ErrorMessage": "Internal Server Error",
+				"Copright":     copyright,
+			})
+			return
+		}
+		threads = append(threads, thread{Thread: thr, Replies: replies})
+	}
 
 	archivedfiles, err := t.postRepo.GetArchivedCaseFiles(c)
 	if err != nil {

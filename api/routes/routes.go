@@ -51,6 +51,9 @@ func InitRoutes(routes *gin.Engine) {
 	routes.GET("/forum", func(c *gin.Context) {
 		svc.View().Forum(c)
 	})
+	routes.POST("/forum", func(c *gin.Context) {
+		svc.View().ForumCreate(c)
+	})
 	// Hidden Messages
 	routes.GET("/hidden-messages", func(c *gin.Context) {
 		svc.View().HiddenMessages(c)

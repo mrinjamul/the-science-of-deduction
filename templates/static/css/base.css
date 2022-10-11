@@ -82,6 +82,16 @@ blockquote {
   color: #00ccff;
 }
 
+.post .form-input {
+  width: 80%;
+  font-size: large;
+  background-color: #323232;
+  color: #fcffda;
+  background-image: url(/static/assets/content.jpg);
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -123,6 +133,18 @@ blockquote {
   margin-left: 2px;
   -moz-border-radius: 14px;
   border-radius: 14px;
+}
+
+.button-default {
+  float: right;
+  background-color: rgba(20, 57, 64, 0.6);
+  color: rgba(0, 164, 201, 1);
+  background-image: url(/static/assets/container-tab.png);
+  opacity: 0.8;
+  font-weight: bold;
+  margin-left: 2px;
+  -moz-border-radius: 20%;
+  border-radius: 20%;
 }
 
 .button:hover {

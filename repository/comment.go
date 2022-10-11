@@ -46,7 +46,7 @@ func (p *comment) GetComments() ([]models.Comment, error) {
 // GetCommentsByThreadID returns a list of Comments
 func (p *comment) GetCommentsByThreadID(id uint) ([]models.Comment, error) {
 	var comments []models.Comment
-	err := p.db.Order("created_at desc").Where("thread_id = ?", id).Find(&comments).Error
+	err := p.db.Order("created_at").Where("thread_id = ?", id).Find(&comments).Error
 	return comments, err
 }
 
