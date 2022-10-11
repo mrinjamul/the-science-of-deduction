@@ -1,0 +1,17 @@
+<div class="post">
+    <div class="message">
+        <div>
+            <img src="/static/assets/profile_picture.png" width="100" alt="profile picture" />
+        </div>
+        <div>
+            <p class="bold color-cyan">{{.Thread.Author}}</p>
+            <p>{{.Thread.Message}}</p>
+        </div>
+    </div>
+    <div class="comment">
+        {{range .Replies}}
+        {{template "forum-comment.html" .}}
+        {{end}}
+    </div>
+
+</div>

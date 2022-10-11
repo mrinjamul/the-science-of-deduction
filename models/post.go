@@ -28,6 +28,7 @@ type CaseFiles struct {
 type Comment struct {
 	Id        uint         `json:"id" gorm:"primary_key,unique,not null"`
 	UserId    uint         `json:"user_id"`
+	Author    string       `json:"author"`
 	PostId    uint         `json:"post_id"`
 	ThreadId  uint         `json:"thread_id"`
 	Type      string       `json:"type"`
@@ -42,6 +43,7 @@ type Comment struct {
 type Thread struct {
 	Id        uint         `json:"id" gorm:"primary_key,unique,not null"`
 	UserId    uint         `json:"user_id"`
+	Author    string       `json:"author"`
 	ThreadId  uint         `json:"thread_id"`
 	Message   string       `json:"message"`
 	CreatedAt time.Time    `json:"created_at" gorm:""`

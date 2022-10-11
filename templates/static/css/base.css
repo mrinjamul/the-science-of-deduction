@@ -59,6 +59,57 @@ blockquote {
   -moz-border-radius: 10px;
 }
 
+.post {
+  font-size: smaller;
+  background-color: #323232;
+  background-image: url(/static/assets/content.jpg);
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  /* keep left space a bit before displaying this elements */
+  margin-left: 10px;
+  padding-left: 10px;
+}
+
+.post p .bold {
+  color: #00ccff;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.color-cyan {
+  color: #00ccff;
+}
+
+.post .message {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.post .message div {
+  /* flex: 1 1 auto; */
+  /* margin: 0; */
+  padding: 5px 5px;
+}
+
+.message-text {
+  width: 100%;
+  margin: 5px 0px 5px;
+  background-image: url(/static/assets/notecontainer.png);
+  border-bottom: 2px solid black;
+  border-right: 2px solid black;
+}
+
 .button {
   float: right;
   /*  height: 34px; */

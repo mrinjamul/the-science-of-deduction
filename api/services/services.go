@@ -31,6 +31,8 @@ func NewServices() Services {
 		healthCheck: controllers.NewHealthCheck(),
 		view: controllers.NewTemplate(
 			repository.NewCaseFiles(db),
+			repository.NewThread(db),
+			repository.NewComment(db),
 		),
 	}
 }

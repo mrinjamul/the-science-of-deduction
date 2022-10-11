@@ -1,26 +1,8 @@
 <div id="postcontainer">
     <div id="post">
         <h1>Latest Forum Posts:</h1>
-        <img src="static/assets/Forum-1.png" />
-        <img src="static/assets/Forum-2.png" />
-        <img src="static/assets/Forum-3.png" />
-        <img src="static/assets/Forum-4.png" />
-        <img src="static/assets/Forum-5.png" />
-        <img src="static/assets/Forum-6.png" />
-        <img src="static/assets/Forum-7.png" />
-        <img src="static/assets/Forum-8.png" />
-        <img src="static/assets/Forum-9.png" />
-        <img src="static/assets/Forum-10.png" />
-        <img src="static/assets/Forum-11.png" />
-        <img src="static/assets/Forum-12.png" />
-        <img src="static/assets/Forum-13.png" />
-        <img src="static/assets/Forum-14.png" />
-        <img src="static/assets/Forum-15.png" />
-        <img src="static/assets/Forum-16.png" />
-
-        <img src="static/assets/Forum-17.png" />
-        <img src="static/assets/Forum-18.png" />
-        <img src="static/assets/Forum-19.png" />
-        <img src="static/assets/Forum-20.png" />
+        {{range .posts}}
+        {{template "forum-post.html" .}}
+        {{end}}
     </div>
 </div>

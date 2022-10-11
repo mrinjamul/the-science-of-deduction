@@ -72,6 +72,8 @@ func GetDB() *gorm.DB {
 
 	// Migrate the schema
 	db.AutoMigrate(&models.CaseFiles{})
+	db.AutoMigrate(&models.Thread{})
+	db.AutoMigrate(&models.Comment{})
 
 	return db
 }

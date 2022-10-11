@@ -29,7 +29,9 @@ type Template interface {
 }
 
 type template struct {
-	postRepo repository.CaseFiles
+	postRepo    repository.CaseFiles
+	threadRepo  repository.Thread
+	commentRepo repository.Comment
 }
 
 // Recent Activities
@@ -501,6 +503,52 @@ func (t *template) CaseFileView(c *gin.Context) {
 // Forum
 func (t *template) Forum(c *gin.Context) {
 
+	type thread struct {
+		Thread  models.Thread    `json:"thread"`
+		Replies []models.Comment `json:"comment"`
+	}
+	var threads []thread
+	// threadsfromDB, err := t.threadRepo.GetThreads(c)
+	// if err != nil {
+	// 	c.HTML(http.StatusInternalServerError, "404.html", gin.H{
+	// 		"Title":        "The Science of Deduction — 404",
+	// 		"ErrorMessage": "Internal Server Error",
+	// 		"Copright":     copyright,
+	// 	})
+	// 	return
+	// }
+	// for _, thr := range threadsfromDB {
+	// 	replies, err := t.commentRepo.GetCommentsByThreadID(thr.Id)
+	// 	if err != nil {
+	// 		c.HTML(http.StatusInternalServerError, "404.html", gin.H{
+	// 			"Title":        "The Science of Deduction — 404",
+	// 			"ErrorMessage": "Internal Server Error",
+	// 			"Copright":     copyright,
+	// 		})
+	// 		return
+	// 	}
+	// 	threads = append(threads, thread{Thread: thr, Replies: replies})
+	// }
+
+	var thr thread
+	thr.Thread = models.Thread{
+		Author:  "mrinjamul",
+		Message: "hello",
+	}
+	thr.Replies = []models.Comment{
+		{
+			Author:  "mrinjamul",
+			Content: "hello",
+		},
+		{
+			Author:  "mrinjamul",
+			Content: "hello",
+		},
+	}
+	threads = append(threads, thr)
+	threads = append(threads, thr)
+	threads = append(threads, thr)
+
 	archivedfiles, err := t.postRepo.GetArchivedCaseFiles(c)
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "404.html", gin.H{
@@ -523,6 +571,7 @@ func (t *template) Forum(c *gin.Context) {
 	c.HTML(http.StatusNotFound, "forum.html", gin.H{
 		"Title":             "The Science of Deduction — Forum",
 		"IsForum":           "active",
+		"posts":             threads,
 		"caseFiles":         casefiles,
 		"archivedCaseFiles": archivedfiles,
 		"recentPostURL":     recentPostURL,
@@ -585,8 +634,10 @@ func (t *template) NotFound(c *gin.Context) {
 }
 
 // NewTemplate is a function for new template
-func NewTemplate(postRepo repository.CaseFiles) Template {
+func NewTemplate(postRepo repository.CaseFiles, threads repository.Thread, replies repository.Comment) Template {
 	return &template{
-		postRepo: postRepo,
+		postRepo:    postRepo,
+		threadRepo:  threads,
+		commentRepo: replies,
 	}
 }
