@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/mrinjamul/the-science-of-deduction/database/postgres"
+	"github.com/mrinjamul/the-science-of-deduction/database"
 )
 
 const (
@@ -85,8 +85,11 @@ func (m *healthCheck) HealthCheck(ctx *gin.Context, startTime time.Time, bootTim
 	status := StatusUnavailable
 	failures := make(map[string]string)
 
-	if postgres.IsConnected {
+	if database.IsConnected {
 		status = StatusOK
+		if database.IsSQLite {
+			failures["postgres"] = "postgres is down using sqlite database"
+		}
 	} else {
 		status = StatusPartiallyAvailable
 		failures["postgres"] = "failed during postgresql health check"

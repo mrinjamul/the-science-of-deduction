@@ -1,0 +1,41 @@
+<div id="postcontainer">
+    <div id="post">
+        <!-- create a form to create new posts -->
+        <form action="" method="post">
+            <label for="title">
+                <h1>Title:</h1>
+            </label>
+            <input class="form-input" type="text" name="title" id="title" />
+            <label for="description">
+                <h1>Description: </h1>
+            </label>
+            <textarea class="form-input" name="description" id="description" rows="5" cols="50"></textarea>
+            <label for="author">
+                <h1>Author: </h1>
+            </label>
+            <input class="form-input" type="text" name="author" id="author" />
+            <!-- IsClosed checkbox -->
+            <label for="isClosed">
+                Is Closed:
+            </label>
+            <input class="form-input" type="checkbox" name="isClosed" id="isClosed" />
+            <!-- IsArchived -->
+            <label for="isArchived">
+                Is Archived:
+            </label>
+            <input class="form-input" type="checkbox" name="isArchived" id="isArchived" />
+            <label for="contents"><br /></label>
+            <textarea class="form-input" name="contents" id="contents" rows="10" cols="50"></textarea>
+            <label for="isArchived">
+                Do you want to delete this case file:
+            </label>
+            <input class="form-input" type="checkbox" name="IsDeleted" id="IsDeleted" />
+            <input class="button" type="submit" value="Create" />
+        </form>
+        <div id="footer">
+            <!--info--><br class="clear" />
+        </div>
+        <!--footer-->
+        <div id="divider"></div>
+    </div>
+</div>

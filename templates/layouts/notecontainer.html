@@ -8,7 +8,7 @@
                 <img src="{{.Avatar}}" class="avatar" alt="" />
             </a>
             <span class="action">
-                {{if .Comment != ""}}
+                {{if ne .Comment ""}}
                 <a rel="nofollow" href="{{.UserProfile}}">{{.Username}}</a>: {{.Comment}}
                 {{else if .Like}}
                 <a rel="nofollow" href="{{.UserProfile}}">{{.Username}}</a> liked this

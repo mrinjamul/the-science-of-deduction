@@ -2,6 +2,8 @@ package services
 
 import (
 	"github.com/mrinjamul/the-science-of-deduction/api/controllers"
+	"github.com/mrinjamul/the-science-of-deduction/database"
+	"github.com/mrinjamul/the-science-of-deduction/repository"
 )
 
 type Services interface {
@@ -24,9 +26,11 @@ func (svc *services) View() controllers.Template {
 
 // NewServices initializes services
 func NewServices() Services {
-	// db := database.GetDB()
+	db := database.GetDB()
 	return &services{
 		healthCheck: controllers.NewHealthCheck(),
-		view:        controllers.NewTemplate(),
+		view: controllers.NewTemplate(
+			repository.NewCaseFiles(db),
+		),
 	}
 }

@@ -11,9 +11,10 @@ type CaseFiles struct {
 	UserId      uint         `json:"user_id"`
 	Author      string       `json:"author"`
 	Type        string       `json:"type"`
-	Title       string       `json:"title"`
+	Title       string       `json:"title" gorm:"unique"`
 	Description string       `json:"description"`
 	Content     string       `json:"content"`
+	URL         string       `json:"url"`
 	IsArchived  bool         `json:"archived,omitempty"`
 	IsClosed    bool         `json:"closed,omitempty"`
 	IsDeleted   bool         `json:"deleted,omitempty"`

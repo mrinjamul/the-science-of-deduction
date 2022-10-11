@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+{{ template "head.html" . }}
+
+<body>
+    <!--wrapper starts-->
+    <div id="wrapper">
+        {{ template "header.html" . }}
+        <div id="content">
+            {{ template "create-post.html" . }}
+            {{ template "sidebar.html" . }}
+            <br class="clear" />
+        </div>
+    </div>
+    <!--wrapper ends-->
+</body>
+
+</html>

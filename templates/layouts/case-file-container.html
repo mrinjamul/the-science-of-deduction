@@ -7,6 +7,11 @@
         {{if .IsClosed}}
         <p>Case closed</p>
         {{end}}
+        {{if ne .CaseAuthor ""}}
+        By {{.CaseAuthor}}
+        {{else}}
+        By Anonymous
+        {{end}}
         <p>&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
         </p>
         {{.CaseContent}}
