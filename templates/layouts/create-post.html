@@ -2,35 +2,36 @@
     <div id="post">
         <!-- create a form to create new posts -->
         <form action="" method="post">
+            <input hidden type="text" name="caseid" id="caseid" value="{{.postId}}" />
             <label for="title">
                 <h1>Title:</h1>
             </label>
-            <input class="form-input" type="text" name="title" id="title" />
+            <input class="form-input" type="text" name="title" id="title" value="{{.postTitle}}" />
             <label for="description">
                 <h1>Description: </h1>
             </label>
-            <textarea class="form-input" name="description" id="description" rows="5" cols="50"></textarea>
+            <textarea class="form-input" name="description" id="description" rows="5" cols="50">{{.postDescription}}
+            </textarea>
             <label for="author">
                 <h1>Author: </h1>
             </label>
-            <input class="form-input" type="text" name="author" id="author" />
-            <!-- IsClosed checkbox -->
+            <input class="form-input" type="text" name="author" id="author" value="{{.postAuthor}}" />
             <label for="isClosed">
                 Is Closed:
             </label>
-            <input class="form-input" type="checkbox" name="isClosed" id="isClosed" />
-            <!-- IsArchived -->
+            <input class="form-input" type="checkbox" name="isClosed" id="isClosed" {{.postIsClosed}} />
             <label for="isArchived">
                 Is Archived:
             </label>
-            <input class="form-input" type="checkbox" name="isArchived" id="isArchived" />
+            <input class="form-input" type="checkbox" name="isArchived" id="isArchived" {{.postIsArchived}} />
             <label for="contents"><br /></label>
-            <textarea class="form-input" name="contents" id="contents" rows="10" cols="50"></textarea>
-            <label for="isArchived">
+            <textarea class="form-input" name="contents" id="contents" rows="10" cols="50">{{.postContents}}
+            </textarea>
+            <label for="isDeleted">
                 Do you want to delete this case file:
             </label>
-            <input class="form-input" type="checkbox" name="IsDeleted" id="IsDeleted" />
-            <input class="button" type="submit" value="Create" />
+            <input class="form-input" type="checkbox" name="isDeleted" id="isDeleted" {{.postIsDeleted}} />
+            <input class="button" type="submit" value="Save" />
         </form>
         <div id="footer">
             <!--info--><br class="clear" />

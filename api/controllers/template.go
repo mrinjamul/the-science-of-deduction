@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -19,6 +20,8 @@ type Template interface {
 	CaseFiles(c *gin.Context)
 	CaseFileNew(c *gin.Context)
 	CreateCaseFile(c *gin.Context)
+	CaseFileEdit(c *gin.Context)
+	UpdateCaseFile(c *gin.Context)
 	CaseFileView(c *gin.Context)
 	Forum(c *gin.Context)
 	HiddenMessages(c *gin.Context)
@@ -163,7 +166,7 @@ func (t *template) CaseFileNew(c *gin.Context) {
 	})
 }
 
-// CreatePost is a function for creating a new post
+// CreateCaseFile is a function for creating a new post
 func (t *template) CreateCaseFile(c *gin.Context) {
 	// Get the post title from the form
 	title := c.PostForm("title")
@@ -236,6 +239,176 @@ func (t *template) CreateCaseFile(c *gin.Context) {
 	c.Redirect(http.StatusMovedPermanently, url)
 }
 
+// CaseFileEdit is a function for editing a case file
+func (t *template) CaseFileEdit(c *gin.Context) {
+
+	// get id from http request
+	id := c.Param("id")
+	// parse title from id
+	title := strings.ReplaceAll(id, "-", " ")
+	// title = strings.ReplaceAll(title, "%20", " ")
+	title = strings.TrimSuffix(title, ".html")
+	title = strings.TrimSpace(title)
+	// fetch case file from db
+	post, err := t.postRepo.GetCaseFileByTitle(c, title)
+	if err != nil {
+		c.HTML(http.StatusNotFound, "404.html", gin.H{
+			"Title":        "404 Not Found",
+			"IsCase":       "active",
+			"ErrorMessage": "Something went wrong\n" + err.Error(),
+			"Copright":     "Copyright © 2022 mrinjamul. All rights reserved.",
+		})
+		return
+	}
+	var (
+		isClosed   string
+		isArchived string
+		isDeleted  string
+	)
+	if post.IsClosed {
+		isClosed = "checked"
+	} else {
+		isClosed = ""
+	}
+	if post.IsArchived {
+		isArchived = "checked"
+	} else {
+		isArchived = ""
+	}
+	if post.IsDeleted {
+		isDeleted = "checked"
+	} else {
+		isDeleted = ""
+	}
+
+	archivedfiles, err := t.postRepo.GetArchivedCaseFiles(c)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "404.html", gin.H{
+			"Title":        "The Science of Deduction — 404",
+			"ErrorMessage": "Internal Server Error",
+			"Copright":     copyright,
+		})
+		return
+	}
+	casefiles, err := t.postRepo.GetActiveCaseFiles(c)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "404.html", gin.H{
+			"Title":        "The Science of Deduction — 404",
+			"ErrorMessage": "Internal Server Error",
+			"Copright":     copyright,
+		})
+		return
+	}
+
+	c.HTML(http.StatusNotFound, "case-file-new.html", gin.H{
+		"Title":             "The Science of Deduction — Case Files",
+		"IsCase":            "active",
+		"postId":            post.Id,
+		"postTitle":         post.Title,
+		"postDescription":   post.Description,
+		"postAuthor":        post.Author,
+		"postIsClosed":      isClosed,
+		"postIsArchived":    isArchived,
+		"postIsDeleted":     isDeleted,
+		"postContents":      post.Content,
+		"caseFiles":         casefiles,
+		"archivedCaseFiles": archivedfiles,
+		"recentPostURL":     recentPostURL,
+		"recentPostTitle":   recentPostTitle,
+		"Copyright":         copyright,
+	})
+}
+
+// UpdateCaseFile is a function for updating a case file
+func (t *template) UpdateCaseFile(c *gin.Context) {
+	// Get id from the form
+	caseid := c.PostForm("caseid")
+	id, err := strconv.Atoi(caseid)
+	if err != nil {
+		c.HTML(http.StatusNotFound, "404.html", gin.H{
+			"Title":        "404 Not Found",
+			"ErrorMessage": "Something went wrong\n" + err.Error(),
+			"Copyright":    "Copyright © 2022 mrinjamul. All rights reserved.",
+		})
+	}
+	// Get the post title from the form
+	title := c.PostForm("title")
+	title = strings.TrimSpace(title)
+	// Get the post description from the form
+	description := c.PostForm("description")
+	description = strings.TrimSpace(description)
+	// Get the post author from the form
+	author := c.PostForm("author")
+	author = strings.TrimSpace(author)
+	// Get the post content from the form
+	content := c.PostForm("contents")
+	// Get the post tags from the form
+	// tags := c.PostForm("tags")
+	// Get isClosed from the form
+	isClosed := c.PostForm("isClosed")
+	// Get isArchived from the form
+	isArchived := c.PostForm("isArchived")
+	// Get isDeleted from the form
+	isDeleted := c.PostForm("isDeleted")
+	// Get the post date from the form
+	date := time.Now()
+	// url for the post
+	url := "/case-files/" + strings.ReplaceAll(title, " ", "-") + ".html"
+	// check if feilds are empty
+	if title == "" { // || author == "" || content == "" {
+		c.HTML(http.StatusNotFound, "404.html", gin.H{
+			"Title":        "Error 400",
+			"ErrorMessage": "Please fill all the feilds",
+			"Copyright":    "Copyright © 2022 mrinjamul. All rights reserved.",
+		})
+		return
+	}
+
+	if author == "" {
+		author = "Anonymous"
+	}
+
+	// Update a new post
+	post := models.CaseFiles{
+		Id:          uint(id),
+		Title:       title,
+		Description: description,
+		Author:      author,
+		Content:     content,
+		URL:         url,
+		UpdatedAt:   date,
+	}
+
+	if isArchived == "on" {
+		post.IsArchived = true
+	} else {
+		post.IsArchived = false
+	}
+	if isClosed == "on" {
+		post.IsClosed = true
+	} else {
+		post.IsClosed = false
+	}
+	if isDeleted == "on" {
+		post.IsDeleted = true
+	} else {
+		post.IsDeleted = false
+	}
+
+	// add case file to db
+	err = t.postRepo.UpdateCaseFile(c, &post)
+	if err != nil {
+		c.HTML(http.StatusNotFound, "404.html", gin.H{
+			"Title":        "404 Not Found",
+			"ErrorMessage": "Something went wrong\n" + err.Error(),
+			"Copyright":    "Copyright © 2022 mrinjamul. All rights reserved.",
+		})
+	}
+
+	// Redirect to the post page
+	c.Redirect(http.StatusMovedPermanently, url)
+}
+
 // CaseFileView is a function for case file view page
 func (t *template) CaseFileView(c *gin.Context) {
 
@@ -279,9 +452,12 @@ func (t *template) CaseFileView(c *gin.Context) {
 			return
 		}
 
+		url := strings.TrimSuffix(post.URL, ".html")
+
 		c.HTML(http.StatusNotFound, "case-files-view.html", gin.H{
 			"Title":             "The Science of Deduction — Case Files",
 			"IsCase":            "active",
+			"url":               url,
 			"CaseTitle":         post.Title,
 			"CaseAuthor":        post.Author,
 			"IsClosed":          false,
@@ -325,7 +501,7 @@ func (t *template) Forum(c *gin.Context) {
 		return
 	}
 
-	c.HTML(http.StatusNotFound, "hidden-messages.html", gin.H{
+	c.HTML(http.StatusNotFound, "forum.html", gin.H{
 		"Title":             "The Science of Deduction — Forum",
 		"IsForum":           "active",
 		"caseFiles":         casefiles,

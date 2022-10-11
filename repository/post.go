@@ -92,31 +92,8 @@ func (p *post) GetRecentCaseFiles(ctx *gin.Context) ([]models.CaseFiles, error) 
 
 // UpdateCaseFile updates a CaseFile
 func (p *post) UpdateCaseFile(ctx *gin.Context, caseFile *models.CaseFiles) error {
-	// fetch the caseFile
-	var oldCaseFile models.CaseFiles
-	err := p.db.First(&oldCaseFile, caseFile.Id).Error
-	if err != nil {
-		return err
-	}
-	// update the caseFile fields if they are not empty
-	if caseFile.Title != "" {
-		oldCaseFile.Title = caseFile.Title
-	}
-	if caseFile.Description != "" {
-		oldCaseFile.Description = caseFile.Description
-	}
-	if caseFile.Author != "" {
-		oldCaseFile.Author = caseFile.Author
-	}
-	if caseFile.IsArchived {
-		oldCaseFile.IsArchived = caseFile.IsArchived
-	}
-	if caseFile.IsClosed {
-		oldCaseFile.IsClosed = caseFile.IsClosed
-	}
-
 	// update the caseFile
-	return p.db.Model(&oldCaseFile).Updates(oldCaseFile).Error
+	return p.db.Save(caseFile).Error
 }
 
 // DeleteCaseFile deletes a CaseFile

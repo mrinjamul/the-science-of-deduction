@@ -37,6 +37,13 @@ func InitRoutes(routes *gin.Engine) {
 	routes.POST("/case-files/new", func(c *gin.Context) {
 		svc.View().CreateCaseFile(c)
 	})
+	routes.GET("/case-files/:id/edit", func(c *gin.Context) {
+		svc.View().CaseFileEdit(c)
+	})
+	routes.POST("/case-files/:id/edit", func(c *gin.Context) {
+		svc.View().UpdateCaseFile(c)
+	})
+
 	routes.GET("/case-files/:id", func(c *gin.Context) {
 		svc.View().CaseFileView(c)
 	})
