@@ -1,8 +1,12 @@
 <div align="center">
-  <img src="templates/static/favicon.png" width="100px" alt="secret logo" />
+  <img src="templates/static/favicon.jpg" width="100px" alt="logo" />
   <h1><code>the-science-of-deduction</code></h1>
   <p>
-    <strong></strong>
+    <strong>
+      A collection of resources for learning the science of deduction 😜. <br/>
+      A Sherlock fan-based blogging site.
+      <img src="templates/static/screenshot-01.png" width="100%" alt="screenshot" />
+    </strong>
   </p>
 </div>
 
