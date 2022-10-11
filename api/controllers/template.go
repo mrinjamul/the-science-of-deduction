@@ -123,7 +123,7 @@ func (t *template) CaseFiles(c *gin.Context) {
 		return
 	}
 
-	c.HTML(http.StatusNotFound, "case-files.html", gin.H{
+	c.HTML(http.StatusOK, "case-files.html", gin.H{
 		"Title":             "The Science of Deduction — Case Files",
 		"IsCase":            "active",
 		"recentCases":       recentCases,
@@ -158,7 +158,7 @@ func (t *template) CaseFileNew(c *gin.Context) {
 		return
 	}
 
-	c.HTML(http.StatusNotFound, "case-file-new.html", gin.H{
+	c.HTML(http.StatusOK, "case-file-new.html", gin.H{
 		"Title":             "The Science of Deduction — Case Files",
 		"IsCase":            "active",
 		"caseFiles":         casefiles,
@@ -314,7 +314,7 @@ func (t *template) CaseFileEdit(c *gin.Context) {
 		return
 	}
 
-	c.HTML(http.StatusNotFound, "case-file-new.html", gin.H{
+	c.HTML(http.StatusOK, "case-file-new.html", gin.H{
 		"Title":             "The Science of Deduction — Case Files",
 		"IsCase":            "active",
 		"postId":            post.Id,
@@ -476,7 +476,7 @@ func (t *template) CaseFileView(c *gin.Context) {
 
 		url := strings.TrimSuffix(post.URL, ".html")
 
-		c.HTML(http.StatusNotFound, "case-files-view.html", gin.H{
+		c.HTML(http.StatusOK, "case-files-view.html", gin.H{
 			"Title":             "The Science of Deduction — Case Files",
 			"IsCase":            "active",
 			"url":               url,
@@ -550,7 +550,7 @@ func (t *template) Forum(c *gin.Context) {
 		return
 	}
 
-	c.HTML(http.StatusNotFound, "forum.html", gin.H{
+	c.HTML(http.StatusOK, "forum.html", gin.H{
 		"Title":             "The Science of Deduction — Forum",
 		"IsForum":           "active",
 		"posts":             threads,
@@ -658,7 +658,7 @@ func (t *template) HiddenMessages(c *gin.Context) {
 		return
 	}
 
-	c.HTML(http.StatusNotFound, "hidden-messages.html", gin.H{
+	c.HTML(http.StatusOK, "hidden-messages.html", gin.H{
 		"Title":             "The Science of Deduction — Hidden Messages",
 		"IsHidden":          "active",
 		"hiddenMessages":    messages,
