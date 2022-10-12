@@ -53,6 +53,12 @@ export $(cat .env | xargs)
 ./the-science-of-deduction
 ```
 
+To start with logging into file,
+
+```sh
+(./the-science-of-deduction 2>&1 ) |& tee "output-$(date -I)-$RANDOM.log"
+```
+
 ### License
 
 - open sourced under the [MIT license](LICENSE)
